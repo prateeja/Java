@@ -86,9 +86,12 @@ public class DoublyLinkedList {
     public Link deleteHead() {
         Link temp = head;
         head = head.next; // oldHead <--> 2ndElement(head)
-        head.previous = null; // oldHead --> 2ndElement(head) nothing pointing at old head so will be removed
-        if (head == null)
+
+        if (head == null) {
             tail = null;
+        } else {
+            head.previous = null; // oldHead --> 2ndElement(head) nothing pointing at old head so will be removed
+        }
         return temp;
     }
 
@@ -100,10 +103,13 @@ public class DoublyLinkedList {
     public Link deleteTail() {
         Link temp = tail;
         tail = tail.previous; // 2ndLast(tail) <--> oldTail --> null
-        tail.next = null; // 2ndLast(tail) --> null
+
         if (tail == null) {
             head = null;
+        } else{
+            tail.next = null; // 2ndLast(tail) --> null
         }
+
         return temp;
     }
 
@@ -159,6 +165,35 @@ public class DoublyLinkedList {
             newLink.next = current; // 1 <--> newLink --> 2(current) <--> 3
             current.previous = newLink; // 1 <--> newLink <--> 2(current) <--> 3
         }
+    }
+
+    /**
+     * Deletes the passed node from the current list
+     *
+     * @param z Element to be deleted
+     */
+    public void deleteNode(Link z) {
+        if(z.next == null){
+            deleteTail();
+        } else if(z == head){
+            deleteHead();
+        } else{ //before <-- 1 <--> 2(z) <--> 3 -->
+            z.previous.next = z.next // 1 --> 3
+            z.next.previous = z.previous // 1 <--> 3
+        }
+    }
+    
+    public static void removeDuplicates(DoublyLinkedList l ) {
+    	Link linkOne = l.head ;
+    	while(linkOne.next != null) { // list is present  
+    		Link linkTwo = linkOne.next; // second link for comparison
+    		while(linkTwo.next!= null) {
+    			if(linkOne.value == linkTwo.value) // if there are duplicates values then 
+    				l.delete(linkTwo.value);  // delete the link
+    			linkTwo = linkTwo.next ; // go to next link 
+    		}
+    		linkOne = linkOne.next; // go to link link to iterate the whole list again
+    	}
     }
 
     /**
